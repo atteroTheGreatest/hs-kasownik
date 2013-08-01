@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>HS-kasownik</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="static/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="https://static.hackerspace.pl/js/checkinator-header.js"></script>
+    
+    
+    <script type="text/javascript" src="https://widgets.twimg.com/j/2/widget.js"></script>
+
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="https://static.hackerspace.pl/img/favicon.ico"/>
+    <link rel="apple-touch-icon" href="https://static.hackerspace.pl/img/glider.png"/>
+    <link rel="stylesheet" href="https://static.hackerspace.pl/fonts/news-cycle/stylesheet.css"/>
+    <link rel="stylesheet" href="https://static.hackerspace.pl/fonts/titillium/stylesheet.css"/>
+    <link rel="stylesheet" href="https://static.hackerspace.pl/css/style.css"/>
+    
+    
+    <link rel="stylesheet" href="static/main.css"/>
+  </head>
+  <body>
+
+    <header id="hs_branding">
+      <a id="hs_header" href="https://hackerspace.pl/">Warsaw Hackerspace</a>
+      <ul id="hs_header_menu">
+        <li><a href="https://hackerspace.pl/about">about</a></li>
+        <li><a href="https://blog.hackerspace.pl">blog</a></li>
+        <li><a href="https://gallery.hackerspace.pl">gallery</a></li>
+        <li><a href="https://wiki.hackerspace.pl">wiki</a></li>
+        <li><a href="https://code.hackerspace.pl">code</a></li>
+        <li><a href="https://webchat.hackerspace.pl">chat</a></li>
+        <li><a href="https://redmine.hackerspace.pl">tasks</a></li>
+      </ul>
+    </header>
+
+    <div id="hs_main">
+          
+      <div id="hs_rotimage">
+            
+        <div id="status" style="display: none;">
+          <div id="status-tooltip" style="display: none;">
+            <p>Refreshing...</p>
+          </div>
+          <img src="https://static.hackerspace.pl/img/status-open.png" alt="Sorry, we're open! - The Warsaw Hackerspace is open right now." />
+        </div>
+          
+        <div class="hs_login_bar">
+          
+            <ul>
+              <li><a class="action user" href="https://ldap.hackerspace.pl">Member profile</a></li>
+            </ul>
+          
+        </div>
+          
+        
+      </div>
+      
+      <div id="hs_content">
+        <div class="alert alert-success">{% for message in get_flashed_messages() %}</p>
+          <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+        {% block body %}
+        {% endblock %}
+
+
+      </div>
+    <!-- JavaScript plugins (requires jQuery) -->
+    
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Optionally enable responsive features in IE8 -->
+    <script src="js/respond.js"></script>
+  </body>
+</html>

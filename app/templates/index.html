@@ -1,0 +1,11 @@
+
+{% extends "layout.html" %}
+{% block body %}
+  <h1>Hello, little brat!</h1>
+  <p>You probably want to see how much are you due to hs. Aren't you?</p>
+  {% if not session.logged_in %}
+        <a href="{{ url_for('login') }}">log in</a>
+        {% else %}
+          <a href="{{ url_for('logout') }}">log out</a>
+  {% endif %}
+{% endblock %}
