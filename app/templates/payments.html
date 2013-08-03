@@ -3,7 +3,37 @@
   <h1>Hello, little brat!</h1>
   <p>You probably want to see how much are you due to hs. Aren't you?</p>
   
-  <h2>Ok. Monies:</h2>
-  <p>blah, blah</p>
+  <h2>Mana</h2>
+  <p>Required: {{ mana.required }} PLN, paid: {{ mana.paid}} PLN</p>
+  <h2>Payments</h2>
+  <p>Type of membership: {{payments.membership}}</p>
+
+  <p>Months due: {{payments.months_due}}</p>
+
+  <h3>History of transactions</h3>
+  <table class="table table-striped">
+  	<thead>
+	  	<tr>
+	  		<th>#</th>
+	  		<th>Account</th>
+		  	<th>Title</th>
+		  	<th>Year</th>
+		  	<th>Month</th>
+		  	<th>Amount [PLN]</th>
+		</tr>
+	</thead>
+	<tbody>
+	  	{% for transaction in payments.paid %}
+	  	<tr>
+	  		<td>{{loop.index}}</td>
+		  	<td>{{transaction.transfer.account}} </td>
+		  	<td>{{transaction.transfer.title}} </td>
+		  	<td>{{transaction.year}}</td>
+		  	<td>{{transaction.month}}</td>
+		  	<td>{{transaction.transfer.amount / 100.0}} </td>
+		</tr>
+	  	{% endfor %}
+	</tbody>
+  </table>
   <a href="{{ url_for('logout') }}">log out</a>
 {% endblock %}
