@@ -1,18 +1,29 @@
-from flask import (Flask, render_template, abort,
+from flask import (Flask, render_template,
                    session, request, flash, redirect,
                    url_for)
 
 import requests
-from kasownik_client import APIClient, APIClientException
+from kasownik_client import APIClient
+from flask.ext.cache import Cache
+
 
 SECRET_KEY = 'development key'
+CACHE_TYPE = 'simple'
 app = Flask(__name__)
 app.config.from_object(__name__)
+cache = Cache(app)
 
 
+@cache.cached(timeout=50)
 @app.route('/')
 def greet():
     return render_template('index.html')
+
+
+@cache.cached(timeout=500)
+def get_header():
+    r = requests.get('http://static.hackerspace.pl/html/topmenu.html')
+    return r.text
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -33,8 +44,9 @@ def login():
         else:
             flash('Authorization error,'
                   ' login or password incorrect!')
-
-    return render_template('login.html', error=error)
+            error = True
+    header = get_header()
+    return render_template('login.html', error=error, header=header)
 
 
 @app.route('/logout')
@@ -47,13 +59,17 @@ def logout():
 @app.route('/payments')
 def show_payments():
     if not session.get('logged_in'):
-        redirect(url_for('login'))
-    kasownik = APIClient()
-    mana = kasownik.mana()
-    username = session['username']
-    user_payments_data = kasownik.member_info(member=username)
-    return render_template('payments.html', mana=mana,
-                            payments=user_payments_data)
+        return redirect(url_for('login'))
+    else:
+        kasownik = APIClient()
+        mana = kasownik.mana()
+        username = session['username']
+        user_payments_data = kasownik.member_info(member=username)
+        
+        header = get_header()
+        return render_template('payments.html', mana=mana,
+                                payments=user_payments_data,
+                                header=header)
 
 if __name__ == '__main__':
     app.run(debug=True)

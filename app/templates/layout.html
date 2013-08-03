@@ -25,16 +25,7 @@
   <body>
 
     <header id="hs_branding">
-      <a id="hs_header" href="https://hackerspace.pl/">Warsaw Hackerspace</a>
-      <ul id="hs_header_menu">
-        <li><a href="https://hackerspace.pl/about">about</a></li>
-        <li><a href="https://blog.hackerspace.pl">blog</a></li>
-        <li><a href="https://gallery.hackerspace.pl">gallery</a></li>
-        <li><a href="https://wiki.hackerspace.pl">wiki</a></li>
-        <li><a href="https://code.hackerspace.pl">code</a></li>
-        <li><a href="https://webchat.hackerspace.pl">chat</a></li>
-        <li><a href="https://redmine.hackerspace.pl">tasks</a></li>
-      </ul>
+      {{ header|safe }}
     </header>
 
     <div id="hs_main">
@@ -61,12 +52,11 @@
       
       <div id="hs_content">
         <div>{% for message in get_flashed_messages() %}
-          <div class="alert alert-success">{{ message }}</div>
+          <div class="alert {% if error %} alert-danger {% else %} alert-success {% endif %}">{{ message }}</div>
         </div>
         {% endfor %}
         {% block body %}
         {% endblock %}
-        <a href="{{ url_for('show_payments') }}">payments</a>
 
       </div>
     
