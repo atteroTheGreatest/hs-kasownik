@@ -17,7 +17,7 @@ cache = Cache(app)
 @cache.cached(timeout=50)
 @app.route('/')
 def greet():
-    return render_template('index.html')
+    return render_template('index.html', header=get_header())
 
 
 @cache.cached(timeout=500)
@@ -62,14 +62,25 @@ def show_payments():
         return redirect(url_for('login'))
     else:
         kasownik = APIClient()
-        mana = kasownik.mana()
         username = session['username']
-        user_payments_data = kasownik.member_info(member=username)
-        
+        mana = get_mana()
+        user_payments_data = kasownik.get_member_info(member=username)
         header = get_header()
         return render_template('payments.html', mana=mana,
                                 payments=user_payments_data,
                                 header=header)
 
+
+def get_mana():
+    host = 'http://kasownik.hackerspace.pl/api'
+    method = "mana.json"
+    r = requests.get(host + "/" + method)
+
+    json_response = r.json()
+    if r.status_code == 200:
+        return json_response['content']
+    else:
+        return None
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=3000)

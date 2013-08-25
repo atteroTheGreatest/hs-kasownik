@@ -42,12 +42,5 @@ class APIClient(object):
 if __name__ == '__main__':
     # private method: get member list
     client = APIClient()
-    print client.members()
-
-    # private method: get member info
-    # this will probably 500 for an unknown member
-    # please please please cache this somehow, as it does weird shit to the database
-    # use memcached or i dunno
-    print client.member_info(member="q3k")
-    # public method: hs mana
-    print client.mana()
+    print client.get_member_info(member="q3k")
+    print client.list_members()

@@ -1,11 +1,9 @@
 
 {% extends "layout.html" %}
 {% block body %}
-  <h1>Hello, little brat!</h1>
-  <p>You probably want to see how much are you due to hs. Aren't you?</p>
-  {% if not session.logged_in %}
-        <a href="{{ url_for('login') }}">log in</a>
-        {% else %}
-          <a href="{{ url_for('logout') }}">log out</a>
-  {% endif %}
+  <h1>HS-kasownik</h1>
+
+  <p>Tutaj możesz przejrzeć swoje ostatnie transakcje i zobaczyć dane związane z płatonściami.</p>
+
+  <a href="{{ url_for('show_payments') }}">transakcje</p>
 {% endblock %}

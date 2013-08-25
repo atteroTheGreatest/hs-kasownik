@@ -19,12 +19,12 @@
     <link rel="stylesheet" href="https://static.hackerspace.pl/fonts/news-cycle/stylesheet.css"/>
     <link rel="stylesheet" href="https://static.hackerspace.pl/fonts/titillium/stylesheet.css"/>
     <link rel="stylesheet" href="https://static.hackerspace.pl/css/style.css"/>
-    
-    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" media="screen">
   </head>
   <body>
 
     <header id="hs_branding">
+      <a id="hs_header" href="https://hackerspace.pl/">Warsaw Hackerspace</a>
       {{ header|safe }}
     </header>
 
@@ -32,8 +32,9 @@
           
       <div id="hs_rotimage">
             
-        <div id="status" style="display: none;">
-          <div id="status-tooltip" style="display: none;">
+        <div id="status"  style="display: none;">
+          <div id="status-tooltip" class='special' style="display: none;-webkit-box-sizing: content-box;
+  box-sizing: content-box;">
             <p>Refreshing...</p>
           </div>
           <img src="https://static.hackerspace.pl/img/status-open.png" alt="Sorry, we're open! - The Warsaw Hackerspace is open right now." />
@@ -42,15 +43,20 @@
         <div class="hs_login_bar">
           
             <ul>
-              <li><a class="action user" href="https://ldap.hackerspace.pl">Member profile</a></li>
+              <li>
+                {% if not session.logged_in %}
+                  <a class="action login" href="{{ url_for('login') }}">Login</a>
+                {% else %}
+                  <a class="action logout" href="{{ url_for('logout') }}">Logout</a>
+                {% endif %}
+              </li>
             </ul>
           
         </div>
-          
         
       </div>
       
-      <div id="hs_content">
+      <div id="hs_content" style="padding: 3em">
         <div>{% for message in get_flashed_messages() %}
           <div class="alert {% if error %} alert-danger {% else %} alert-success {% endif %}">{{ message }}</div>
         </div>

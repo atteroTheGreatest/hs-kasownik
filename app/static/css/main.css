@@ -42,6 +42,10 @@ ul.news li {
   padding-right: 16px;
 }
 
+#hs_content.body {
+  padding: 1em;
+}
+
 #hs_content .news li {
   margin: 0;
 }
