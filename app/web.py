@@ -65,11 +65,20 @@ def show_payments():
         username = session['username']
         mana = get_mana()
         user_payments_data = kasownik.get_member_info(member=username)
+        print username
         header = get_header()
         return render_template('payments.html', mana=mana,
                                 payments=user_payments_data,
-                                header=header)
+                                header=header,
+                                username=username,)
 
+
+@app.template_filter('shorten')
+def shorten_filter(s):
+    if len(s) > 10:
+        return s[:4] + "..." + s[-4:]
+    else:
+        return s
 
 def get_mana():
     host = 'http://kasownik.hackerspace.pl/api'

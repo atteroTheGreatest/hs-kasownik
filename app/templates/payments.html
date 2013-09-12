@@ -1,40 +1,115 @@
 {% extends "layout.html" %}
 {% block body %}
-  <h2>Finances</h2>
-  <p>Details about making payments are described on <a href="https://wiki.hackerspace.pl/members:finanse">finance-wiki</a>.
-  </p>
+  
   <h2>Mana</h2>
   <p>Hackerspace mana is a ratio of money paid by members to money they are due for
-  	current month.</p>
-  <p>Required: {{ mana.required }} PLN, paid: {{ mana.paid}} PLN</p>
+    current month.</p>
+  <p>
+    Required: {{ mana.required }} PLN,
+    paid: {{ mana.paid}} PLN
+    
+  </p>
+  {% if mana.required > mana.paid and payments.months_due > 0 %}
+    <p>WE NEED YOUR SWORD!</p>
+  {% endif %}
   <h2>Payments</h2>
   <p>Type of membership: {{payments.membership}}</p>
 
   <p>Months due: {{payments.months_due}}</p>
+        {% if payments.months_due > 0%}
+            <p>
+                Oh, you should send hackerspace at least <span class="blink"> {% if payments.membership == "starving" %} {{ 50 * payments.months_due}} {% else %} {{ 100 * payments.months_due}} {% endif %} PLN. </span>
+            </p>
+            <p>
+                There are two ways of regular paying:
+                <ul>
+                    <li>
+                        One remittance per every month due. Then you should send {% if payments.membership == "starving" %} {{ 50 * payments.months_due}} {% else %} {{ 100 * payments.months_due}} {% endif %} PLN {{ payments.months_due }} times. Then you should follow instructions in the table below. It's a good way, because it's already automated.
+                    </li>
+                    <li>
+                        All at once! Title of remittance doesn't matter. The human being (probably angry that he must do it instead of hacking) will parse your transaction.
+                    </li>
+                </ul>
+        {% endif %}
+
+
+  <h2>Finances</h2>
+
+  <p>Details about making payments are described on <a href="https://wiki.hackerspace.pl/members:finanse">finance-wiki</a>.
+  </p>
+  <p>But in short:</p>
+  <div class="table sectionedit2">
+        <table class="inline">
+            <tr class="row0">
+                <th class="col0 leftalign"> Numer konta</th>
+                <th class="col1 leftalign">Cel</th>
+                <th class="col2"> Nazwa odbiorcy </th>
+                <th class="col3"> Format opisu przelewu</th>
+                <th class="col4"> Przykładowy opis przelewu</th>
+            </tr>
+            <tr class="row1">
+                <td class="col0"> 72 1140 1010 0000 5412 4400 1002 </td>
+                <td class="col1 leftalign">Składki członkowskie</td>
+                <td class="col2"> STOWARZYSZENIE WARSZAWSKI HACKERSPACE</td>
+                <td class="col3"> &lt;nick&gt; - &lt;typ&gt; - składka </td>
+                <td class="col4"> {{username}} - {{payments.membership}} - składka </td>
+            </tr>
+            <tr class="row2">
+                <td class="col0"> 45 1140 1010 0000 5412 4400 1003 </td>
+                <td class="col1"> Składki i darowizny celowe (na projekty)</td>
+                <td class="col2"> STOWARZYSZENIE WARSZAWSKI HACKERSPACE </td>
+                <td class="col3"> &lt;nick&gt; - darowizna - &lt;projekt&gt;</td>
+                <td class="col4">
+                     {{username}}-DAROWIZNA-PLYTA WARSZTATOWA DO POKOJU #2
+                </td>
+            </tr>
+        </table>
+    </div>
 
   <h3>History of transactions</h3>
+  <p>Here you can see details of your transactions.</p>
+  <p>
+    Every row describes one monthly payment. It's already divided in parts, so you shouldn't worry, that you send too much money. Some transactions are here more than once and they can display more than you are monthly due, because they covered payments for more than one month.
+  </p>
   <table class="table table-striped">
-  	<thead>
-	  	<tr>
-	  		<th>#</th>
-	  		<th>Account</th>
-		  	<th>Title</th>
-		  	<th>Year</th>
-		  	<th>Month</th>
-		  	<th>Amount [PLN]</th>
-		</tr>
-	</thead>
-	<tbody>
-	  	{% for transaction in payments.paid %}
-	  	<tr>
-	  		<td>{{loop.index}}</td>
-		  	<td>{{transaction.transfer.account}} </td>
-		  	<td>{{transaction.transfer.title}} </td>
-		  	<td>{{transaction.year}}</td>
-		  	<td>{{transaction.month}}</td>
-		  	<td>{{transaction.transfer.amount / 100.0}} </td>
-		</tr>
-	  	{% endfor %}
-	</tbody>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Account</th>
+            <th>Title</th>
+            <th>Year</th>
+            <th>Month</th>
+            <th>Amount [PLN]</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for transaction in payments.paid %}
+        <tr>
+            <td>{{loop.index}}</td>
+            <td>{{transaction.transfer.account | shorten}} </td>
+            <td>{{transaction.transfer.title}} </td>
+            <td>{{transaction.year}}</td>
+            <td>{{transaction.month}}</td>
+            <td>{{transaction.transfer.amount / 100.0}} </td>
+        </tr>
+        {% endfor %}
+    </tbody>
   </table>
+  <script>
+    function blinks(hide) {
+        if (hide === 1) {
+            $('.blink').show();
+            hide = 0;
+        }
+        else {
+            $('.blink').hide();
+            hide = 1;
+        }
+        setTimeout("blinks("+hide+")", 400);
+    }
+
+    $(document).ready(function(){
+        blinks(1);
+    });
+  </script>
 {% endblock %}

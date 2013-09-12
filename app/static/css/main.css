@@ -217,3 +217,8 @@ div.flashes li {
 div.flashes li.error {
   background-color: #a01023;
 }
+
+.blink {
+  color: rgb(234, 34, 34);
+  font-weight:bold;
+}
